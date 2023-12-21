@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.model;
 
+import br.com.alura.screenmatch.repository.SerieRepository;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Serie {
     private String poster;
     private String sinopse;
 
-    @OneToMany(mappedBy = "serie")
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios = new ArrayList<>();
 
     public Serie(DadosSerie dadosSerie){
@@ -42,7 +43,10 @@ public class Serie {
     }
 
     public Serie() {
+    }
 
+    public List<Episodio> getEpisodios(){
+        return episodios;
     }
 
     public long getId() {
@@ -82,6 +86,8 @@ public class Serie {
     }
 
     public void setEpisodios(List<Episodio> episodios) {
+        //mapeia de qual serie é cada episodio
+        episodios.forEach(e -> e.setSerie(this));
         this.episodios = episodios;
     }
 
@@ -90,9 +96,9 @@ public class Serie {
         return String.format("================================================="
                 + "\n%22s" + getTitulo() + "\n%22s" +  getTotalTemporadas() + "\n%22s" +
                         getAvaliacao() + "\n%22s" + getGenero() + "\n%22s" + getAtores() +
-                        "\n%22s"+ getPoster() + "\n%22s" + getSinopse() +
+                        "\n%22s"+ getPoster() + "\n%22s" + getSinopse() + "\n%22s" + getEpisodios() +
                 "\n=================================================", "Título: ",
                 "Total de Temporadas: ", "Avaliação: ", "Gênero: " , "Atores: ",
-                "Poster: ", "Sinopse: ");
+                "Poster: ", "Sinopse: ", "Episodios");
     }
 }
