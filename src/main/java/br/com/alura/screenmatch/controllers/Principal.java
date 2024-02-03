@@ -1,9 +1,13 @@
-package br.com.alura.screenmatch.principal;
+package br.com.alura.screenmatch.controllers;
 
-import br.com.alura.screenmatch.model.*;
+import br.com.alura.screenmatch.DTOs.RequestSerieDTO;
+import br.com.alura.screenmatch.DTOs.RequestTemporadaDTO;
+import br.com.alura.screenmatch.entities.Episodio;
+import br.com.alura.screenmatch.entities.Serie;
+import br.com.alura.screenmatch.models.Categoria;
 import br.com.alura.screenmatch.repository.SerieRepository;
-import br.com.alura.screenmatch.service.ConsumoApi;
-import br.com.alura.screenmatch.service.ConverteDados;
+import br.com.alura.screenmatch.utils.ConsumoApi;
+import br.com.alura.screenmatch.utils.ConverteDados;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -93,7 +97,7 @@ public class Principal {
     }
 
     private void buscarSerieWeb(){
-        DadosSerie dados = getDadosSerie();
+        RequestSerieDTO dados = getDadosSerie();
         Serie serie = new Serie(dados);
         try {
             repositorio.save(serie);
@@ -109,11 +113,11 @@ public class Principal {
                 .forEach(System.out::println);
     }
 
-    private DadosSerie getDadosSerie() {
+    private RequestSerieDTO getDadosSerie() {
         System.out.println("Digite o nome da série para busca");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
-        return conversor.obterDados(json, DadosSerie.class);
+        return conversor.obterDados(json, RequestSerieDTO.class);
     }
 
     private void buscarEpisodioPorSerie(){
@@ -131,11 +135,11 @@ public class Principal {
             Serie serieEncontrada = serie.get();
 
             //pega todas as temporadas e joga em List<DadosTemporada> temporadas
-            List<DadosTemporada> temporadas = new ArrayList<>();
+            List<RequestTemporadaDTO> temporadas = new ArrayList<>();
             for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
                 var json = consumo.obterDados(ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
-                DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-                temporadas.add(dadosTemporada);
+                RequestTemporadaDTO requestTemporadaDTO = conversor.obterDados(json, RequestTemporadaDTO.class);
+                temporadas.add(requestTemporadaDTO);
             }
             //lista aninhada: temporadas -> temporada -> lista DadosTemp -> Lista Ep -> Ep
             List<Episodio> episodios = temporadas.stream()

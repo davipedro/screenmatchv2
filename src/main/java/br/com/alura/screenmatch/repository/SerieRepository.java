@@ -1,8 +1,8 @@
 package br.com.alura.screenmatch.repository;
 
-import br.com.alura.screenmatch.model.Categoria;
-import br.com.alura.screenmatch.model.Episodio;
-import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.models.Categoria;
+import br.com.alura.screenmatch.entities.Episodio;
+import br.com.alura.screenmatch.entities.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

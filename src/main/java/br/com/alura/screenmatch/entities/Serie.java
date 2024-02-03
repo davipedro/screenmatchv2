@@ -1,12 +1,22 @@
-package br.com.alura.screenmatch.model;
-
-import br.com.alura.screenmatch.repository.SerieRepository;
-import jakarta.persistence.*;
+package br.com.alura.screenmatch.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
+
+import br.com.alura.screenmatch.models.Categoria;
+import br.com.alura.screenmatch.DTOs.RequestSerieDTO;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "series")
@@ -27,18 +37,18 @@ public class Serie {
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios = new ArrayList<>();
 
-    public Serie(DadosSerie dadosSerie){
-        this.titulo = dadosSerie.titulo();
-        this.totalTemporadas = dadosSerie.totalTemporadas();
-        this.avaliacao = Optional.ofNullable(dadosSerie.avaliacao())
+    public Serie(RequestSerieDTO requestSerieDTO){
+        this.titulo = requestSerieDTO.titulo();
+        this.totalTemporadas = requestSerieDTO.totalTemporadas();
+        this.avaliacao = Optional.ofNullable(requestSerieDTO.avaliacao())
                 .map(Double::parseDouble)
                 .orElse(null);
-        this.genero = Optional.ofNullable(dadosSerie.genero())
+        this.genero = Optional.ofNullable(requestSerieDTO.genero())
                 .map(g -> Categoria.fromString(g.split(",")[0].trim()))
                 .orElse(null);
-        this.atores = dadosSerie.atores();
-        this.poster = dadosSerie.enderecoPoster();
-        this.sinopse = dadosSerie.sinopse();
+        this.atores = requestSerieDTO.atores();
+        this.poster = requestSerieDTO.enderecoPoster();
+        this.sinopse = requestSerieDTO.sinopse();
         //this.sinopse = ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim(); - chave expirada
     }
 

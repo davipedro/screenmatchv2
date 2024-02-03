@@ -1,5 +1,6 @@
-package br.com.alura.screenmatch.model;
+package br.com.alura.screenmatch.entities;
 
+import br.com.alura.screenmatch.DTOs.RequestEpisodioDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,19 +21,19 @@ public class Episodio {
 
     public Episodio(){}
 
-    public Episodio(Integer numeroTemporada, DadosEpisodio dadosEpisodio) {
+    public Episodio(Integer numeroTemporada, RequestEpisodioDTO requestEpisodioDTO) {
         this.temporada = numeroTemporada;
-        this.titulo = dadosEpisodio.titulo();
-        this.numeroEpisodio = dadosEpisodio.numero();
+        this.titulo = requestEpisodioDTO.titulo();
+        this.numeroEpisodio = requestEpisodioDTO.numero();
 
         try {
-            this.avaliacao = Double.valueOf(dadosEpisodio.avaliacao());
+            this.avaliacao = Double.valueOf(requestEpisodioDTO.avaliacao());
         } catch (NumberFormatException ex) {
             this.avaliacao = 0.0;
         }
 
         try {
-            this.dataLancamento = LocalDate.parse(dadosEpisodio.dataLancamento());
+            this.dataLancamento = LocalDate.parse(requestEpisodioDTO.dataLancamento());
         } catch (DateTimeParseException ex) {
             this.dataLancamento = null;
         }
