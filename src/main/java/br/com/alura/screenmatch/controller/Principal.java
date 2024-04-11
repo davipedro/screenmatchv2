@@ -1,4 +1,4 @@
-package br.com.alura.screenmatch.controllers;
+package br.com.alura.screenmatch.controller;
 
 import br.com.alura.screenmatch.DTOs.RequestSerieDTO;
 import br.com.alura.screenmatch.DTOs.RequestTemporadaDTO;
