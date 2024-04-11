@@ -3,6 +3,7 @@ package br.com.alura.screenmatch.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.alura.screenmatch.DTOs.ResponseEpisodioDTO;
 import br.com.alura.screenmatch.DTOs.ResponseSerieDTO;
 import br.com.alura.screenmatch.service.SerieService;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -43,6 +45,10 @@ public class SerieController {
 
         return ResponseEntity.ok(serie);
     }
-    
+
+    @GetMapping("/{id}/temporadas/todas")
+    public ResponseEntity<List<ResponseEpisodioDTO>> getAllSeasonsById(@PathVariable Long id) {
+        return ResponseEntity.ok(serieService.getAllSeasons(id));
+    }
     
 }
