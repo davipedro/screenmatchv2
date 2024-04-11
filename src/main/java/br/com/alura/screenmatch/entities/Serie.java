@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import br.com.alura.screenmatch.models.Categoria;
 import br.com.alura.screenmatch.DTOs.RequestSerieDTO;
 import jakarta.persistence.CascadeType;
@@ -34,6 +36,7 @@ public class Serie {
     private String poster;
     private String sinopse;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios = new ArrayList<>();
 
