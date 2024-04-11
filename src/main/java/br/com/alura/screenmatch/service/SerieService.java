@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.alura.screenmatch.DTOs.ResponseEpisodioDTO;
 import br.com.alura.screenmatch.DTOs.ResponseSerieDTO;
+import br.com.alura.screenmatch.entities.Episodio;
 import br.com.alura.screenmatch.entities.Serie;
 import br.com.alura.screenmatch.repository.SerieRepository;
 
@@ -33,9 +35,10 @@ public class SerieService {
 
     public ResponseSerieDTO getSerieById(Long id) {
         Serie serie = serieRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Série não encontrada"));
+            .orElse(new Serie());
         
         return new ResponseSerieDTO(
+                serie.getId(),
                 serie.getTitulo(),
                 serie.getTotalTemporadas(),
                 serie.getAvaliacao(),
@@ -50,6 +53,7 @@ public class SerieService {
         return series
             .stream()
             .map(s -> new ResponseSerieDTO(
+                s.getId(),
                 s.getTitulo(),
                 s.getTotalTemporadas(),
                 s.getAvaliacao(),
@@ -58,5 +62,19 @@ public class SerieService {
                 s.getPoster(),
                 s.getSinopse()
         )).toList();
+    }
+
+    public List<ResponseEpisodioDTO> getAllSeasons(Long serieId) {
+        List<Episodio> episodio = serieRepository.findAllSeasons(serieId);
+        return episodio.stream()
+            .map(e -> new ResponseEpisodioDTO(
+                e.getId(),
+                e.getTemporada(),
+                e.getTitulo(),
+                e.getNumeroEpisodio(),
+                e.getAvaliacao(),
+                e.getDataLancamento(),
+                e.getSerie()
+            )).toList();
     }
 }
